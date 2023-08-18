@@ -56,12 +56,18 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+// @ts-ignore
 import nuxtStorage from "nuxt-storage/nuxt-storage";
 
-const newTodo = ref('')
-const todoData = nuxtStorage.localStorage.getData('todosData') || []
-const todos = await ref(todoData)
+const newTodo = ref<string>('');
+const todoData: Todo[] = nuxtStorage.localStorage.getData('todosData') || [];
+const todos = ref<Todo[]>(todoData);
+
+type Todo = {
+  done: boolean;
+  content: string;
+}
 
 function addTodo() {
   if (newTodo.value) {
@@ -74,12 +80,12 @@ function addTodo() {
   saveTodo()
 }
 
-function changeStatusTodo(todo) {
+function changeStatusTodo(todo: Todo) {
   todo.done = !todo.done
   saveTodo()
 }
 
-function removeTodo(index) {
+function removeTodo(index: number) {
   todos.value.splice(index, 1)
   saveTodo()
 }
